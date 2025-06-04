@@ -1,0 +1,12 @@
+@import "tailwindcss";
+@plugin "flowbite-react/plugin/tailwindcss";
+@source "../.flowbite-react/class-list.json";
+@import 'flowbite';
+
+.active{
+    background-color: blue;
+    border-radius: 10px;
+    border:0;
+    padding: 
+    7px 25px;
+}
