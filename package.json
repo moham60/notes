@@ -2,7 +2,7 @@
   "name": "noteapp",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://moham60.github.io/noteApp",
+  "homepage": "https://moham60.github.io/notes",
   "type": "module",
   "scripts": {
     "dev": "vite",
