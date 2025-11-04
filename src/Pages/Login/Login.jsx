@@ -96,28 +96,15 @@ export default function Login() {
     }),
   });
   return (
-    <div className="bg-black min-h-screen   flex items-center justify-center text-white">
+    <div className=" min-h-screen   flex items-center justify-center ">
       <form
         action=""
         onSubmit={formikObj.handleSubmit}
-        className="login bg-gray-900 text-white w-3/4 md:w-1/2  lg:w-1/3 px-4 py-6 rounded-lg r">
+        className="login bg-white shadow-2xl dark:bg-gray-900 dark:text-white w-3/4 md:w-1/2  lg:w-1/3 px-4 py-6 rounded-lg r">
         <h1 className="  flex items-center gap-2  justify-center  text-center   mb-2">
           <LuNotepadText color="aqua" size={28} /> Login
         </h1>
-        {messages.errorMessage ? (
-          <div className="bg-red-700 my-4 w-[65%] m-auto rounded-sm text-center text-2xl p-2">
-            {messages.errorMessage}
-          </div>
-        ) : (
-          ""
-        )}
-        {messages.successMessage ? (
-          <div className="bg-[#3fdf3f] my-4 w-[95%] m-auto rounded-sm text-center text-xl p-2">
-            {messages.successMessage}
-          </div>
-        ) : (
-          ""
-        )}
+    
         <div className="mb-4">
           <label htmlFor="email" className="block mb-2">
             Email:
@@ -131,7 +118,7 @@ export default function Login() {
             name="email"
             autoComplete="off"
             placeholder="Enter your email"
-            className="w-full p-2 bg-gray-900 text-white rounded"
+            className="w-full p-2 border dark:border-gray-700 border-gray-300 focus:outline-0 focus:border-blue-600 dark:bg-gray-900 rounded"
           />
           {formikObj.touched.email && formikObj.errors.email ? (
             <div className=" rounded-md my-2 p-2 text-red-500  mt-1">
@@ -154,7 +141,7 @@ export default function Login() {
             name="password"
             autoComplete="off"
             placeholder="Enter your password"
-            className="w-full p-2 bg-gray-900 text-white rounded"
+            className="w-full p-2 border dark:border-gray-700 border-gray-300 focus:outline-0 focus:border-blue-600 dark:bg-gray-900 dark:text-white rounded"
             required
           />
           {formikObj.touched.password && formikObj.errors.password ? (
@@ -165,7 +152,7 @@ export default function Login() {
             ""
           )}
         </div>
-        <button className="submit-btn bg-[blue] rounded-md p-2 w-full cursor-pointer hover:bg-[#142275]  border-0    transition-all duration-1000">
+        <button className="submit-btn text-white bg-[blue] rounded-md p-2 w-full cursor-pointer hover:bg-[#142275]  border-0    transition-all duration-1000">
           {loading ? (
             <div className="loader flex items-center justify-center">
               <RotatingLines

@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
 
 .active{
     background-color: blue;
@@ -7,4 +8,5 @@
     border:0;
     padding: 
     7px 25px;
+    color: white;
 }

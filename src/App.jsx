@@ -9,6 +9,8 @@ import Notes from "./Pages/Home/Home";
 import NotFound from "./Pages/NotFound/NotFound";
 import { QueryClient, QueryClientProvider } from "react-query";
 import Authunticated from "./Component/Authunticated/Authunticated";
+import { Note } from './Pages/NoteDetails/NoteDetails';
+import ThemeProvider from "./Context/ThemeContext/ThemeProvider";
 const client = new QueryClient({});
 const route = createHashRouter([
   {
@@ -27,6 +29,15 @@ const route = createHashRouter([
           </Authunticated>
         ),
       },
+       {
+        path: "/Note/:id",
+        element: (
+          <Authunticated>
+            <Note/>
+          </Authunticated>
+        ),
+      },
+
       {
         path: "/register",
         element: <Register />,
@@ -45,7 +56,8 @@ const route = createHashRouter([
 function App() {
   return (
     <QueryClientProvider client={client}>
-      <AuthProvider>
+      <ThemeProvider>
+<AuthProvider>
         <RouterProvider router={route}></RouterProvider>
       </AuthProvider>
       <ToastContainer
@@ -61,6 +73,8 @@ function App() {
         theme="dark"
         transition={Bounce}
       />
+      </ThemeProvider>
+      
     </QueryClientProvider>
   );
 }

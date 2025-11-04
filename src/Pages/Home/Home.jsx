@@ -9,12 +9,12 @@ import Modal from "../../Component/Modal/Modal";
 import { Bounce, toast } from "react-toastify";
 
 import { ThreeCircles } from "react-loader-spinner";
+import { Link } from "react-router-dom";
 
 export default function Notes() {
   const { token } = useContext(AuthContext);
   const [notes, setnotes] = useState([]);
   const [editNote, seteditNote] = useState(false);
-  const [noNotes, setnoNotes] = useState(0);
   const [noteValues, setnoteValues] = useState({
     title: "",
     content: "",
@@ -31,7 +31,6 @@ export default function Notes() {
       .then((res) => {
         console.log(res);
         setnotes(res.data.notes);
-        setnoNotes(res.data.notes.length);
         setloading(false);
       })
       .catch((err) => {
@@ -74,9 +73,27 @@ export default function Notes() {
   const [openModel, setopenModel] = useState(false);
 
   return (
-    <main className="bg-gray-950 w-full min-h-screen flex items-center justify-center   ">
-      <div className=" bg-gray-900  w-[90%] p-8   text-white    rounded-lg relative ">
-        {loading ? (
+    <main className="min-h-screen  ">
+      <div className="  px-6  py-20   dark:text-white    rounded-lg relative ">
+       
+        <div className="btn absolute end-2 top-2 ">
+          <button
+            onClick={() => {
+              setopenModel(true);
+              seteditNote(false);
+            }}
+            className=" flex items-center gap-2 cursor-pointer  text-white bg-[blue] dark:hover:bg-[#0000ff69]  hover:bg-blue-800 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center "
+            type="button">
+            <FaRegNoteSticky size={15} color="white" />
+
+            <span>Add Notes</span>
+          </button>
+        </div>
+        <div className="search my-4">
+          <input type="text" placeholder="Search Notes" className="w-full border
+          border-gray-200  dark:border-gray-800 focus:outline-0 focus:border-blue-600 transition-all duration-100 rounded p-2" />
+        </div>
+         {loading ? (
           <div className="flex items-center justify-center">
             <ThreeCircles
               visible={true}
@@ -91,69 +108,50 @@ export default function Notes() {
         ) : (
           ""
         )}
-        <div className="btn absolute end-2 top-2 ">
-          <button
-            onClick={() => {
-              setopenModel(true);
-              seteditNote(false);
-            }}
-            className=" flex items-center gap-2 cursor-pointer  text-white bg-[blue] hover:bg-[#0000ff69]  focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center "
-            type="button">
-            <FaRegNoteSticky size={15} color="white" />
-
-            <span>Add Notes</span>
-          </button>
-        </div>
-        <div
-          className="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6
-         ">
-          {notes &&
-            notes.map((note) => (
-              <div
-                key={note._id}
-                className="note rounded-lg w-full      bg-black p-5">
-                <h3 className="text-center text-xl font-extrabold my-1">
-                  {note.title}
-                </h3>
-                <div
-                  id={note._id}
-                  className="icons p-3   border-b-1 flex items-center justify-between">
-                  <MdDelete
-                    onClick={() => deleteNote(note._id)}
-                    size={28}
-                    className="cursor-pointer deleteNote text-[#890707] hover:text-[red]"
-                  />
-                  <TbEditOff
-                    size={28}
-                    onClick={() => {
+          {notes.length>0 ?
+            <div className="flex flex-wrap   gap-2">
+              {notes.map(note => (
+                <Link to={`/Note/${note._id}`}
+                  onClick={() => {
+                    localStorage.setItem("SelectedNote", JSON.stringify(note));
+                  }}
+                  className=" p-2 cursor-pointer bg-white shadow dark:bg-gray-800 rounded h-full flex flex-col justify-between  w-full md:w-[49%] lg:w-[24%]">
+                  <h3 className="text-center font-bold text-2xl my-4">{note.title}</h3>
+                  <p className=" break-words whitespace-normal" >{note.content.length > 300 ? `${note.content.slice(0, 300)}...` : note.content}</p>
+                  <div className="flex my-2 justify-between">
+                    <button className="cursor-pointer" onClick={(e) => {
+                      e.preventDefault();
                       seteditNote(true);
-                      setopenModel(true);
                       setnoteValues(note);
-                    }}
-                    className="cursor-pointer editNote text-[#065706] hover:text-[#2ee32e]"
-                  />
-                </div>
-                <div className="noteContent mt-2 text-center">
-                  <p className="text-xl ">{note.content}</p>
-                </div>
+                      setopenModel(true);
+                    }} > <TbEditOff size={25} className="text-yellow-300 
+                    dark:text-yellow-400 hover:text-yellow-00"  /></button>
+                    <button className="cursor-pointer" onClick={(e) => {
+                      deleteNote(note._id) 
+                      
+                       e.preventDefault();
+                    }
+                     
+                    
+                    }><MdDelete size={25} className=" text-red-500 dark:text-red-700 hover:text-red-800" /></button>
+                  </div>
+                  </Link>
+                ))}
               </div>
-            ))}
+            :  <div className="notFound  flex justify-center items-center">
+            {!loading&&<p className="text-red-600 text-2xl">Not Found Notes</p>}
+            
+          </div>}
         </div>
-        {noNotes == 0 ? (
-          <div className="notFound  flex justify-center items-center">
-            <p className="text-red-600 text-2xl">Not Found Notes</p>
-          </div>
-        ) : (
-          ""
-        )}
-      </div>
+        
+     
       {openModel && (
         <Modal
           setnotes={setnotes}
           editNotes={editNote}
           setopenModel={setopenModel}
           noteValues={noteValues}
-          setnonotes={setnoNotes}
+        
         />
       )}
     </main>
