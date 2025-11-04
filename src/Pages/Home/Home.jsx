@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 export default function Notes() {
   const { token } = useContext(AuthContext);
   const [notes, setnotes] = useState([]);
+  const [allnotes, setAllnotes] = useState([]);
   const [editNote, seteditNote] = useState(false);
   const [noteValues, setnoteValues] = useState({
     title: "",
@@ -31,6 +32,7 @@ export default function Notes() {
       .then((res) => {
         console.log(res);
         setnotes(res.data.notes);
+        setAllnotes(res.data.notes);
         setloading(false);
       })
       .catch((err) => {
@@ -48,6 +50,7 @@ export default function Notes() {
       .then((res) => {
         console.log(res);
         setnotes((oldnotes) => oldnotes.filter((el) => el._id !== noteId));
+         setAllnotes((oldnotes) => oldnotes.filter((el) => el._id !== noteId));
         toast.success("✅ Successfully deleting note", {
           position: "top-right",
           autoClose: 5000,
@@ -59,11 +62,25 @@ export default function Notes() {
           theme: "dark",
           transition: Bounce,
         });
-        setnoNotes((oldNum) => oldNum - 1);
+       
       })
       .catch((err) => {
         console.log(err);
       });
+  }
+  const handleSearch = (value) => {
+   
+    console.log(value);
+    if (value !== "") {
+      const updatedNotes = allnotes.filter(
+        (note => note.title.toLowerCase().includes(value.toLowerCase())));
+      setnotes(updatedNotes);
+    }
+   
+    else {
+      setnotes(allnotes);
+    }
+    
   }
   useEffect(() => {
     if (token) {
@@ -90,7 +107,7 @@ export default function Notes() {
           </button>
         </div>
         <div className="search my-4">
-          <input type="text" placeholder="Search Notes" className="w-full border
+          <input onInput={(e)=>handleSearch(e.target.value)} type="text" placeholder="Search Notes" className="w-full border
           border-gray-200  dark:border-gray-800 focus:outline-0 focus:border-blue-600 transition-all duration-100 rounded p-2" />
         </div>
          {loading ? (
